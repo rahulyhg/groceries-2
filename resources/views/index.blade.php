@@ -1,4 +1,4 @@
-@if(!array_key_found("XSRF-TOKEN", $_COOKIES))
+@if(!array_key_exists("XSRF-TOKEN", $_COOKIES))
 <?php header("Refresh:0"); ?>
 @endif
 <!DOCTYPE html>
