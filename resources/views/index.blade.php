@@ -1,3 +1,6 @@
+@if(!array_key_found("XSRF-TOKEN", $_COOKIES))
+<?php header("Refresh:0"); ?>
+@endif
 <!DOCTYPE html>
 <html>
 <head>
@@ -188,7 +191,7 @@
 		            		$("#index_"+id_food).find(".category").val(category);
 		            		if(addToList){
 		            			$("#index_"+id_food).addClass("bg-success");
-			            		$("#list_"+category).append("<li id='food_"+id_food+"'>1x "+name+"</li>");
+			            		$("#list_"+category).append("<li id='food_"+id_food+"'>1x "+name+" (<a href='#' class='adjust'>Adjust quantity</a>&nbsp;|&nbsp;<a href='#' class='remove'>Remove</a>)</li>");
 			            		$("#category_"+category).show();
 		            		}
 		            		$("#cancelAdd").click();
