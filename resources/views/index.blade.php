@@ -150,8 +150,8 @@
 		            cache: false,
 		            @if(!array_key_exists("XSRF-TOKEN", $_COOKIE))
 					<?php header("Refresh:0");
-					exit(); ?>
-					@elseif
+					//die(); ?>
+					@else
 		            headers: { 'X-XSRF-TOKEN' : "{{$_COOKIE['XSRF-TOKEN']}}" }, 
 		            @endif
 		            url: "{{URL::route('saveNewItem')}}",
@@ -214,7 +214,12 @@
 		  		$.ajax({
 		            type: 'post',
 		            cache: false,
-		            headers: { 'X-XSRF-TOKEN' : "{{$_COOKIE["XSRF-TOKEN"]}}" }, 
+		            @if(!array_key_exists("XSRF-TOKEN", $_COOKIE))
+					<?php header("Refresh:0");
+					//die(); ?>
+					@else
+		            headers: { 'X-XSRF-TOKEN' : "{{$_COOKIE['XSRF-TOKEN']}}" }, 
+		            @endif 
 		            url: "{{URL::route('addToList')}}",
 		            data: str, 
 		            dataType: 'json',
