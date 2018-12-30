@@ -1,7 +1,4 @@
-@if(!array_key_exists("XSRF-TOKEN", $_COOKIE))
-<?php header("Refresh:0");
-exit(); ?>
-@endif
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -151,7 +148,12 @@ exit(); ?>
 		  		$.ajax({
 		            type: 'post',
 		            cache: false,
-		            headers: { 'X-XSRF-TOKEN' : "{{$_COOKIE["XSRF-TOKEN"]}}" }, 
+		            @if(!array_key_exists("XSRF-TOKEN", $_COOKIE))
+					<?php header("Refresh:0");
+					exit(); ?>
+					@elseif
+		            headers: { 'X-XSRF-TOKEN' : "{{$_COOKIE['XSRF-TOKEN']}}" }, 
+		            @endif
 		            url: "{{URL::route('saveNewItem')}}",
 		            data: str, 
 		            dataType: 'html',
