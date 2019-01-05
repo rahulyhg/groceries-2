@@ -156,8 +156,8 @@
 		            @endif
 		            url: "{{URL::route('saveNewItem')}}",
 		            data: str, 
-		            dataType: 'html',
-		            success: function(id_food){
+		            dataType: 'json',
+		            success: function(food_data){
 		            	if(edit){
 		            		row.find('.field').hide();
 		            		row.find('.food_name').find('.text').text(name);
@@ -168,7 +168,7 @@
 
 		            	}
 		            	else{
-		            		var addRow = "<tr id='index_"+id_food+"' id_food='"+id_food+"'>";
+		            		var addRow = "<tr id='index_"+food_data.id_food+"' id_food='"+food_data.id_food+"'>";
 		            		addRow += "<td class='food_name'>";
 		            		addRow += "<span class='text'>"+name+"</span>";
 		            		addRow += "<span class='field'><input type='text' class='form-control name' value='"+name+"'></span></td>";
@@ -186,15 +186,15 @@
 							addRow += "<a href='#' class='btn btn-danger cancelEdit'>Cancel</a></span></td>";
 							addRow += "</tr>";
 		            		$("#itemIndexBody").append(addRow);
-		            		$(".addOne").click(addOne);
-							$(".addSpecific").click(addSpecific);
-							$(".edit").click(editFunction);
-							$(".saveEdit").click(saveEdit);
-							$(".cancelEdit").click(cancelEdit);
-		            		$("#index_"+id_food).find(".category").val(category);
+		            		$("#index_"+food_data.id_food).find(".addOne").click(addOne);
+							$("#index_"+food_data.id_food).find(".addSpecific").click(addSpecific);
+							$("#index_"+food_data.id_food).find(".edit").click(editFunction);
+							$("#index_"+food_data.id_food).find(".saveEdit").click(saveEdit);
+							$("#index_"+food_data.id_food).find(".cancelEdit").click(cancelEdit);
+		            		$("#index_"+food_data.id_food).find(".category").val(category);
 		            		if(addToList){
-		            			$("#index_"+id_food).addClass("bg-success");
-			            		$("#list_"+category).append("<li id='food_"+id_food+"'>1x "+name+" (<a href='#' class='adjust'>Adjust quantity</a>&nbsp;|&nbsp;<a href='#' class='remove'>Remove</a>)</li>");
+		            			$("#index_"+food_data.id_food).addClass("bg-success");
+			            		$("#list_"+category).append("<li id='food_"+food_data.id_food+"'>1x "+name+" (<a href='#' class='adjust'>Adjust quantity</a>&nbsp;|&nbsp;<a href='#' class='remove'>Remove</a>)</li>");
 			            		$("#category_"+category).show();
 		            		}
 		            		$("#cancelAdd").click();
@@ -202,10 +202,14 @@
 				  		
 		            },
 		            error: function(data){
-		            	console.log(data);
-		            	alert("Error");
+		            	var errors = Object.values(JSON.parse(data.responseText).errors);
+		                var errorsText = "";
+		                errors.forEach(function(value, index){
+		                    errorsText += "• "+value+"\n";
+		                });
+		                alert(errorsText);
 
-		            }
+				            }
 		        });
 			}
 
@@ -232,8 +236,8 @@
 			            	else{
 			            		$("#list_"+food_data.category).append("<li id='food_"+id_food+"'>"+food_data.quantity+"x "+food_data.name+" (<a href='#' class='adjust'>Adjust quantity</a>&nbsp;|&nbsp;<a href='#' class='remove'>Remove</a>)</li>");
 			            	}
-			            	$(".adjust").click(adjustAmount);
-			            	$(".remove").click(remove);
+			            	$("#food_"+id_food).find(".adjust").click(adjustAmount);
+			            	$("#food_"+id_food).find(".remove").click(remove);
 		            		$("#category_"+food_data.category).show();
 		            		if(!adjust)
 		            			alert("Added "+amount+" "+food_data.name+" to the shopping list");
@@ -310,7 +314,7 @@
 							<span class="field"><input type="text" class="form-control name" value="{{$foodItem->name}}"></span>
 						</td>
 						<td class="food_category" id_category="{{$foodItem->id_category}}">
-							<span class="text">{{$foodItem->category->name}}</span>
+							<span class="text">@if($foodItem->category !== null){{$foodItem->category->name}}@endif</span>
 							<span class="field">
 								<select class="form-control category">
 									@foreach($categories as $category)

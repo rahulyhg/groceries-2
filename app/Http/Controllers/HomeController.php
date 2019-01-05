@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Input;
 use App\Models\Category;
 use App\Models\Food;
 
+use App\Http\Requests\SaveRequest;
+
 class HomeController extends Controller
 {
     /**
@@ -27,7 +29,7 @@ class HomeController extends Controller
         return view("index", compact("categories", "foodItems"));
     }
 
-    public function saveNewItem(Request $request){
+    public function saveNewItem(SaveRequest $request){
         if(Input::get("edit") == "true")
             $food = Food::find(Input::get("id_food"));
         else
@@ -38,7 +40,7 @@ class HomeController extends Controller
             $food->quantity = 1;
         }
         $food->save();
-        return $food->id_food;
+        return json_encode(["id_food"=>$food->id_food]);
     }
 
     public function addToList(Request $request){
