@@ -19,6 +19,9 @@
 		.field{
 			display:none;
 		}
+		a:hover{
+			cursor:pointer!important;
+		}
 	</style>
 	<script>
 		jQuery.fn.outerHTML = function() {
@@ -178,12 +181,12 @@
 		            		addRow += "<select class='form-control category'>@foreach($categories as $category)<option value='{{$category->id_category}}'>{{$category->name}}</option>@endforeach</select></span></td>";
 		            		addRow += "<td class='food_actions'>";
 		            		addRow += "<span class='text'>"
-		            		addRow += "<a href='#' class='addOne btn btn-primary'>Add 1</a>&nbsp;";
-							addRow += "<a href='#' class=' addSpecific btn btn-primary'>Add X</a>&nbsp;";
-							addRow += "<a href='#' class='edit btn btn-warning'>Edit</a></span>";
+		            		addRow += "<a class='addOne btn btn-primary'>Add 1</a>&nbsp;";
+							addRow += "<a class=' addSpecific btn btn-primary'>Add X</a>&nbsp;";
+							addRow += "<a class='edit btn btn-warning'>Edit</a></span>";
 							addRow += "<span class='field'>";
-							addRow += "<a href='#' class='btn btn-success saveEdit'>Save</a>&nbsp;";
-							addRow += "<a href='#' class='btn btn-danger cancelEdit'>Cancel</a></span></td>";
+							addRow += "<a class='btn btn-success saveEdit'>Save</a>&nbsp;";
+							addRow += "<a class='btn btn-danger cancelEdit'>Cancel</a></span></td>";
 							addRow += "</tr>";
 		            		$("#itemIndexBody").append(addRow);
 		            		$("#index_"+food_data.id_food).find(".addOne").click(addOne);
@@ -194,7 +197,7 @@
 		            		$("#index_"+food_data.id_food).find(".category").val(category);
 		            		if(addToList){
 		            			$("#index_"+food_data.id_food).addClass("bg-success");
-			            		$("#list_"+category).append("<li id='food_"+food_data.id_food+"'>1x "+name+" (<a href='#' class='adjust'>Adjust quantity</a>&nbsp;|&nbsp;<a href='#' class='remove'>Remove</a>)</li>");
+			            		$("#list_"+category).append("<li id='food_"+food_data.id_food+"'>1x "+name+" (<a class='adjust'>Adjust quantity</a>&nbsp;|&nbsp;<a class='remove'>Remove</a>)</li>");
 			            		$("#category_"+category).show();
 		            		}
 		            		$("#cancelAdd").click();
@@ -231,10 +234,10 @@
 		            	if(amount > 0){
 	            			$("#index_"+id_food).addClass("bg-success");
 	            			if($("#food_"+id_food).length > 0){
-			            		$("#food_"+id_food).html(food_data.quantity+"x "+food_data.name+" (<a href='#' class='adjust'>Adjust quantity</a>&nbsp;|&nbsp;<a href='#' class='remove'>Remove</a>)");
+			            		$("#food_"+id_food).html(food_data.quantity+"x "+food_data.name+" (<a class='adjust'>Adjust quantity</a>&nbsp;|&nbsp;<a class='remove'>Remove</a>)");
 			            	}
 			            	else{
-			            		$("#list_"+food_data.category).append("<li id='food_"+id_food+"'>"+food_data.quantity+"x "+food_data.name+" (<a href='#' class='adjust'>Adjust quantity</a>&nbsp;|&nbsp;<a href='#' class='remove'>Remove</a>)</li>");
+			            		$("#list_"+food_data.category).append("<li id='food_"+id_food+"'>"+food_data.quantity+"x "+food_data.name+" (<a class='adjust'>Adjust quantity</a>&nbsp;|&nbsp;<a class='remove'>Remove</a>)</li>");
 			            	}
 			            	$("#food_"+id_food).find(".adjust").click(adjustAmount);
 			            	$("#food_"+id_food).find(".remove").click(remove);
@@ -263,7 +266,7 @@
 </head>
 <body>
 {{csrf_field()}}
-	<a href="#" id="toggleLists">Show item index</a>
+	<a id="toggleLists">Show item index</a>
 	<div id="shoppingList">
 		<h1>Shopping list</h1>
 		@foreach($categories as $category)
@@ -271,7 +274,7 @@
 				<h3>{{$category->name}}</h3>
 				<ul id="list_{{$category->id_category}}">
 					@foreach($category->foods()->whereNotNull("quantity")->get() as $food)
-						<li id="food_{{$food->id_food}}" id_food="{{$food->id_food}}">{{$food->quantity}}x {{$food->name}} (<a href="#" class="adjust">Adjust quantity</a>&nbsp;|&nbsp;<a href="#" class="remove">Remove</a>)</li>
+						<li id="food_{{$food->id_food}}" id_food="{{$food->id_food}}">{{$food->quantity}}x {{$food->name}} (<a class="adjust">Adjust quantity</a>&nbsp;|&nbsp;<a class="remove">Remove</a>)</li>
 					@endforeach
 				</ul>
 			</div>
@@ -280,7 +283,7 @@
 	<div id="itemIndex">
 		<h1>Item index</h1>
 		<input type="text" class="form-control" id="search" placeholder="Search">
-		<a href="#" id="showAdd" class="btn btn-primary">Add item</a><br><br>
+		<a id="showAdd" class="btn btn-primary">Add item</a><br><br>
 		<table class="table table-bordered">
 			<thead>
 				<tr>
@@ -300,9 +303,9 @@
 					</select>
 				</td>
 				<td>
-					<a href="#" id="saveAdd" class="btn btn-success">Add to index</a>
-					<a href="#" id="saveAddList" class="btn btn-primary">Add to index and shopping list</a>
-					<a href="#" id="cancelAdd" class="btn btn-danger">Cancel</a>
+					<a id="saveAdd" class="btn btn-success">Add to index</a>
+					<a id="saveAddList" class="btn btn-primary">Add to index and shopping list</a>
+					<a id="cancelAdd" class="btn btn-danger">Cancel</a>
 				</td>
 
 			</tr>
@@ -325,13 +328,13 @@
 						</td>
 						<td class="food_actions">
 							<span class="text">
-								<a href="#" class="addOne btn btn-primary">Add 1</a>
-								<a href="#" class="addSpecific btn btn-primary">Add X</a>
-								<a href="#" class="edit btn btn-warning">Edit</a>
+								<a class="addOne btn btn-primary">Add 1</a>
+								<a class="addSpecific btn btn-primary">Add X</a>
+								<a class="edit btn btn-warning">Edit</a>
 							</span>
 							<span class="field">
-								<a href='#' class='btn btn-success saveEdit'>Save</a>
-								<a href='#' class='btn btn-danger cancelEdit'>Cancel</a>
+								<a class='btn btn-success saveEdit'>Save</a>
+								<a class='btn btn-danger cancelEdit'>Cancel</a>
 							</span>
 						</td>
 					</tr>
