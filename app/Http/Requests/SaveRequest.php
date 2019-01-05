@@ -13,10 +13,18 @@ class SaveRequest extends FormRequest
     }
 
     public function rules(){
-        return[
-            "name" => "required|unique:food,name",
-            "category" => "required",
-        ];
+        if($this->edit == "false"){
+            return[
+                "name" => "required|unique:food,name",
+                "category" => "required",
+            ];
+        }
+        else{
+            return[
+                "name" => "required",
+                "category" => "required",
+            ];
+        }
     }
 
     public function messages(){
